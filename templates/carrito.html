@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito - Stock Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('inicio') }}">Stock Manager</a>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title mb-4">Tu Carrito</h2>
+                
+                {% if carrito %}
+                    {% for producto in carrito %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <img src="{{ producto.imagen }}" class="img-fluid rounded" alt="{{ producto.nombre }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="card-title">{{ producto.nombre }}</h5>
+                                    <p class="text-muted">{{ producto.vendedor }}</p>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <h5 class="text-danger">${{ "%.2f"|format(producto.precio * (1 - producto.descuento/100)) }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    
+                    <div class="text-end mt-4">
+                        <h4>Total: ${{ "%.2f"|format(total) }}</h4>
+                        <button class="btn btn-primary btn-lg mt-3">Finalizar Compra</button>
+                    </div>
+                {% else %}
+                    <p>No hay productos en el carrito</p>
+                    <a href="{{ url_for('inicio') }}" class="btn btn-primary">Volver a la tienda</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
